@@ -6,27 +6,6 @@ part of 'RestClient.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-User _$UserFromJson(Map<String, dynamic> json) {
-  return User(
-    login: json['login'] as String?,
-    repos: json['repos'] as int?,
-    gists: json['gists'] as int?,
-    followers: json['followers'] as int?,
-  )
-    ..following = json['following'] as int?
-    ..bio = json['bio'] as String?
-    ..avatar_url = json['avatar_url'] as String?;
-}
-
-Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
-      'login': instance.login,
-      'repos': instance.repos,
-      'gists': instance.gists,
-      'followers': instance.followers,
-      'following': instance.following,
-      'bio': instance.bio,
-      'avatar_url': instance.avatar_url,
-    };
 
 // **************************************************************************
 // RetrofitGenerator
@@ -52,6 +31,38 @@ class _RestClient implements RestClient {
                 queryParameters: queryParameters, data: _data)
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = User.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<List<Repo>> listRepos(user) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<List<dynamic>>(_setStreamType<List<Repo>>(
+        Options(method: 'GET', headers: <String, dynamic>{}, extra: _extra)
+            .compose(_dio.options, '/users/$user/repos',
+                queryParameters: queryParameters, data: _data)
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    var value = _result.data!
+        .map((dynamic i) => Repo.fromJson(i as Map<String, dynamic>))
+        .toList();
+    return value;
+  }
+
+  @override
+  Future<List<Repo>> listReposWithPage(user, page) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'page': page};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<List<dynamic>>(_setStreamType<List<Repo>>(
+        Options(method: 'GET', headers: <String, dynamic>{}, extra: _extra)
+            .compose(_dio.options, '/users/$user/repos',
+                queryParameters: queryParameters, data: _data)
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    var value = _result.data!
+        .map((dynamic i) => Repo.fromJson(i as Map<String, dynamic>))
+        .toList();
     return value;
   }
 
