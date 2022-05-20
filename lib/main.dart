@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 
 import 'RestClient.dart';
+import '/util/dialog.dart';
 
 void main() {
   runApp(const GithubApp());
@@ -33,17 +34,22 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   String _displayText = "";
-  final dio = Dio(); // Rainbow?
 
-  Future<User> getUserProf () async{
+  // Rainbow?
+  final dio = Dio();
+
+  // 계정입력
+  String sAccount ="";
+
+  Future<User> getUserProf (String sUser) async{
     final client = RestClient(dio);
 
-    User u = await client.getUser("google");
+    User u = await client.getUser(sUser);
     return u;
   }
 
-  void _getUserInfo() async{
-    User u = await getUserProf();
+  void _getUserInfo(String sUser) async{
+    User u = await getUserProf(sUser);
     setState(() {
 
       // client.getUser("google").then((it) =>
@@ -59,22 +65,45 @@ class _MainPageState extends State<MainPage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              '$_displayText',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
-        ),
-      ),
+      body: mainContent(),
       floatingActionButton: FloatingActionButton(
-        onPressed: _getUserInfo,
+        onPressed: (){
+          askAccountDialog(context, (value){
+            setState(() {
+              sAccount = value;
+            });
+          }, (){
+            setState(() {
+              Navigator.pop(context);
+            });
+
+          },(){
+            setState(() {
+              _getUserInfo(sAccount);
+              Navigator.pop(context);
+            });
+          });}, //_getUserInfo,
         tooltip: 'get github info',
         child: const Icon(Icons.search),
       ),
     );
   }
+
+  // main 화면
+  Widget mainContent() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+
+          Text(
+            '$_displayText',
+            style: Theme.of(context).textTheme.headline4,
+          ),
+        ],
+      ),
+    );
+  }
+
+
 }
