@@ -22,6 +22,7 @@ class _MainPageState extends State<MainPage> {
   // 리스트처리
   List<dynamic> display_lst = new List.empty(growable: true);
   int lstCount = 0;
+  int pagecount = 0;
 
   // scroll
   final ScrollController _scrollController = ScrollController();
@@ -42,6 +43,8 @@ class _MainPageState extends State<MainPage> {
     _scrollController.addListener(() {
       if(_scrollController.position.pixels >= _scrollController.position.maxScrollExtent ){
         print("more");
+        pagecount++;
+        _getNextPage(sAccount, pagecount);
       }
     });
   }
@@ -61,11 +64,19 @@ class _MainPageState extends State<MainPage> {
     return u;
   }
 
-  // 계정정보
+  // 처음 repo list 가져오기
   Future<List<Repo>> getRepoListFirst(String sUser) async{
     final client = RestClient(dio);
     List<Repo> lst = await client.listRepos(sUser);
 
+    pagecount = 0;
+
+    return lst;
+  }
+
+  Future<List<Repo>> getRepoNext(String sUser, int page) async{
+    final client = RestClient(dio);
+    List<Repo> lst = await client.listReposWithPage(sUser, page);
     return lst;
   }
 
@@ -74,12 +85,26 @@ class _MainPageState extends State<MainPage> {
     List<Repo> lst = await getRepoListFirst(sUser);
     setState(() {
 
+      display_lst.clear();
+
       // data 추가
       display_lst.add(u);
       display_lst.addAll(lst);
 
       // 화면갱신
       lstCount = lst.length;
+    });
+  }
+
+  void _getNextPage(String sUser, int page) async{
+    List<Repo> lst = await getRepoNext(sUser, page);
+    setState(() {
+
+      // data 추가
+      display_lst.addAll(lst);
+
+      // 화면갱신
+      lstCount = display_lst.length;
     });
   }
 
