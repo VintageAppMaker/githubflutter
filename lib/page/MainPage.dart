@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 
 import '/api/RestClient.dart';
-import '/util/dialog.dart';
+import '/util/Ui.dart';
 
 import '/api/githubdata.dart';
 
@@ -19,6 +19,8 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
 
+  // 통신처리
+  bool bLoading = false;
   // 리스트처리
   List<dynamic> display_lst = new List.empty(growable: true);
   int lstCount = 0;
@@ -81,9 +83,16 @@ class _MainPageState extends State<MainPage> {
   }
 
   void _getUserInfo(String sUser) async{
+
+    setState(() {
+      bLoading = true;
+    });
+
     User u = await getUserProf(sUser);
     List<Repo> lst = await getRepoListFirst(sUser);
+
     setState(() {
+      bLoading = false;
 
       display_lst.clear();
 
@@ -93,12 +102,18 @@ class _MainPageState extends State<MainPage> {
 
       // 화면갱신
       lstCount = lst.length;
+
     });
   }
 
   void _getNextPage(String sUser, int page) async{
+    setState(() {
+      bLoading = true;
+    });
+
     List<Repo> lst = await getRepoNext(sUser, page);
     setState(() {
+      bLoading = false;
 
       // data 추가
       display_lst.addAll(lst);
@@ -142,31 +157,37 @@ class _MainPageState extends State<MainPage> {
   // main 화면
   Widget mainContent() {
     return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
+      child: Stack(
+        children: [
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
 
-          // user 정보
-          Text(
-            '$sAccount',
-            style: Theme.of(context).textTheme.headline4,
+              // user 정보
+              Text(
+                '$sAccount',
+                style: Theme.of(context).textTheme.headline4,
+              ),
+
+              // repo 리스트 : Expanded로 감싸야 한다.
+              Expanded(child: ListView.builder(
+                controller: _scrollController,
+                itemBuilder: (BuildContext, index){
+                  return makeRepoCard(index);
+                },
+                itemCount: lstCount,
+                shrinkWrap: true,
+                padding: EdgeInsets.all(5),
+                scrollDirection: Axis.vertical,
+              ))
+            ],
           ),
-
-          // repo 리스트 : Expanded로 감싸야 한다.
-          Expanded(child: ListView.builder(
-            controller: _scrollController,
-            itemBuilder: (BuildContext, index){
-              return makeRepoCard(index);
-            },
-            itemCount: lstCount,
-            shrinkWrap: true,
-            padding: EdgeInsets.all(5),
-            scrollDirection: Axis.vertical,
-          ))
+          if(bLoading) showProgress()
         ],
       ),
     );
   }
+
 
   // Repo 카드
   Widget makeRepoCard(int index) {

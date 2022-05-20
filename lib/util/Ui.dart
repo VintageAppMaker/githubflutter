@@ -2,6 +2,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+// progress 보이기
+Widget showProgress() =>Center(child: Column(mainAxisAlignment: MainAxisAlignment.center,children: [CircularProgressIndicator()]));
 
 // 계정입력 input dialog
 Future<void> askAccountDialog(BuildContext context, Function onChanged, Function onCancel, Function onOk ) async {
