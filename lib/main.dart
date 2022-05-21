@@ -16,6 +16,7 @@ class GithubApp extends StatelessWidget {
     return MaterialApp(
       scrollBehavior: DeskScrollBehavior(),
       title: 'Flutter github API',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.red,
       ),

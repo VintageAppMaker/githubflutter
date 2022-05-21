@@ -41,3 +41,15 @@ Future<void> askAccountDialog(BuildContext context, Function onChanged, Function
         );
       });
 }
+
+
+// Appbar를 없애면 status 영역까지 침범함을 방지하기 위함
+class BlankAppBar extends StatelessWidget implements PreferredSizeWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
+
+  @override
+  Size get preferredSize => Size(0.0, 0.0);
+}
