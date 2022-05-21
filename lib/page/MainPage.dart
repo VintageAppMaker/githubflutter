@@ -211,7 +211,7 @@ class _MainPageState extends State<MainPage> {
             child: ListView.builder(
           controller: _scrollController,
           itemBuilder: (BuildContext, index) {
-            return makeRepoCard(index);
+            return makeItemCard(index);
           },
           itemCount: lstCount,
           shrinkWrap: true,
@@ -223,7 +223,7 @@ class _MainPageState extends State<MainPage> {
   }
 
   // Repo 카드
-  Widget makeRepoCard(int index) {
+  Widget makeItemCard(int index) {
     if (display_lst == null)
       return Text(
         '자료없음',
@@ -273,6 +273,7 @@ class _MainPageState extends State<MainPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
+          SizedBox(height: 18.0),
           Center(
               child: Image.network(u.avatar_url ?? "", fit: BoxFit.fitWidth)),
           Container(
@@ -286,7 +287,7 @@ class _MainPageState extends State<MainPage> {
                   SizedBox(height: 8.0),
                   Text(u.bio ?? ""),
                   Text("🤴 followers : ${u.followers}"),
-                  Text("👨‍🎓following : ${u.following}"),
+                  Text("👨‍🎓 following : ${u.following}"),
                 ],
               ))
         ],
@@ -302,7 +303,7 @@ class _MainPageState extends State<MainPage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(" ▶ 계정을 검색하세요",
+          Text("⬜ 계정을 검색하세요",
               style: TextStyle(fontSize: 18, color: Color(0xFFFFFFFF))),
           SizedBox(height: 8.0),
           Image.network(
