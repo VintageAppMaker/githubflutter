@@ -18,7 +18,7 @@ Future<void> askAccountDialog(BuildContext context, Function onChanged, Function
               onChanged(value);
             },
             controller: _textFieldController,
-            decoration: InputDecoration(hintText: "please enter github account"),
+            decoration: InputDecoration(hintText: "🔔 please enter github account"),
           ),
           actions: <Widget>[
             FlatButton(
