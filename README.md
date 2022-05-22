@@ -49,7 +49,7 @@ flutter pub run build_runner build
 아래소스 링크
 
 ~~~
-[githubdata.dart 링크](/lib/githubdata.dart)
+[githubdata.dart 링크](/lib/api/githubdata.dart)
 
 3. github api에 사용된 예제는 인증키가 없으므로 서버에서 종종 에러를 발생할 것임.
 
