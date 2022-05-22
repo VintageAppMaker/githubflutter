@@ -5,7 +5,8 @@
 2. 사용시 다음과 같은 방법으로 코드를 생성해야 함
 
 ~~~dart
-// @RestApi(baseUrl: "")가 정의된 파일에서 시작.... <= 레트로핏 Interface 정의파일 (예제에서는 RestClient.dart)
+// @RestApi(baseUrl: "")가 정의된 파일에서 시작.... 
+// <= 레트로핏 Interface 정의파일 (예제에서는 RestClient.dart)
 
 // 0. 참고사이트(레트로핏, dio)
 // https://pub.dev/packages/retrofit
@@ -13,8 +14,11 @@
 
 1. retrofit API가 선언된 파일(이곳)에서 데이터 정의
 정의 시 @JsonSerializable()으로 선언하고
-데이터를 정의하며  
-fromJson(), fromJson() 함수를 같이 선언 후, 대입하는 구조로 구현한다. 
+데이터를 정의하며 
+
+직렬화에 필요한  
+fromJson(), fromJson() 함수를 같이 선언 후, 
+[파일명.g.dart]에서 생성된 값으로 대입하는 방법으로 구현한다. 
 
 // ex)
 @JsonSerializable()
@@ -29,12 +33,15 @@ class User {
 
   User({this.login, this.repos, this.gists, this.followers});
 
+  // serialization을 위한 함수
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
   Map<String, dynamic> Function(User instance) toJson() => _$UserToJson;
 
 }
 
-대입시 넣는 함수는 _$함수명으로 한다. 개발환경에서는 존재하지 않는 것이기에 에러를 발생할 것이지만 무시한다.  
+대입시 넣는 함수는 _$함수명으로 한다. 
+아직 [파일명.g.dart]이 생성되지 않았기에  
+개발환경에서는 존재하지 않아 에러를 발생할 것이지만 무시한다.  
 
 2. retrofit 제너레이트 코드를 사용하기 위해 
 part '파일명.g.dart'를 수동으로 정의한다. 
