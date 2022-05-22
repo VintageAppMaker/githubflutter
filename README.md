@@ -46,9 +46,10 @@ flutter pub run build_runner build
 단, fromJson(), fromJson() 함수를 정의한 내용을 [파일명.g.dart]에서 
 가져와서 같은 파일에 기술해야 한다. 
 
-[](/lib/githubdata.dart)
+아래소스 링크
 
 ~~~
+[githubdata.dart 링크](/lib/githubdata.dart)
 
 3. github api에 사용된 예제는 인증키가 없으므로 서버에서 종종 에러를 발생할 것임.
 
