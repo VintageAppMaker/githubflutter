@@ -47,7 +47,7 @@ class User {
 part '파일명.g.dart'를 수동으로 정의한다. 
 
 3. 터미널에서 실행
-flutter pub run build_runner build
+flutter pub run build_runner build(1번만 실행일 때는 build 소스 수정시마다 실행은 watch)
 
 4. 빌드가 된 후에는 파일명.g.dart가 생성되어 에러가 발생하지 않을 것이다. 
 그리고 이대로 사용해도 되지만, 정의된 데이터를 따로 파일로 관리하는 것이 편리하다.
