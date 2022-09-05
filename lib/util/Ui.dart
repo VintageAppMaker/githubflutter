@@ -21,18 +21,14 @@ Future<void> askAccountDialog(BuildContext context, Function onChanged, Function
             decoration: InputDecoration(hintText: "🔔 please enter github account"),
           ),
           actions: <Widget>[
-            FlatButton(
-              color: Colors.red,
-              textColor: Colors.white,
-              child: Text('CANCEL'),
+            TextButton(
+              child: Text('CANCEL', style: TextStyle(color: Colors.red),),
               onPressed: () {
                 onCancel();
               },
             ),
-            FlatButton(
-              color: Colors.black,
-              textColor: Colors.white,
-              child: Text('OK'),
+            TextButton(
+              child: Text('OK', style: TextStyle(color: Colors.black),),
               onPressed: () {
                 onOk();
               },
