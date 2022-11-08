@@ -190,35 +190,42 @@ class _MainPageState extends State<MainPage> {
     );
   }
 
-  Column makeAccountInfo() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        // user 정보
-        Container(
-            padding: EdgeInsets.all(12),
-            width: double.infinity,
-            child: Center(
-                child: Text(
-              '$sAccount',
-              style: TextStyle(fontSize: 18, color: Color(0xFFD0CFCF)),
-            ))),
+  Widget makeAccountInfo() {
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        return Container(
+          width: (constraints.maxWidth < 550) ? double.infinity : 550,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              // user 정보
+              Container(
+                  padding: EdgeInsets.all(12),
+                  width: double.infinity,
+                  child: Center(
+                      child: Text(
+                    '$sAccount',
+                    style: TextStyle(fontSize: 18, color: Color(0xFFD0CFCF)),
+                  ))),
 
-        SizedBox(height: 8.0),
+              SizedBox(height: 8.0),
 
-        // repo 리스트 : Expanded로 감싸야 한다.
-        Expanded(
-            child: ListView.builder(
-          controller: _scrollController,
-          itemBuilder: (BuildContext, index) {
-            return makeItemCard(index);
-          },
-          itemCount: lstCount,
-          shrinkWrap: true,
-          padding: EdgeInsets.all(5),
-          scrollDirection: Axis.vertical,
-        ))
-      ],
+              // repo 리스트 : Expanded로 감싸야 한다.
+              Expanded(
+                  child: ListView.builder(
+                controller: _scrollController,
+                itemBuilder: (BuildContext, index) {
+                  return makeItemCard(index);
+                },
+                itemCount: lstCount,
+                shrinkWrap: true,
+                padding: EdgeInsets.all(5),
+                scrollDirection: Axis.vertical,
+              ))
+            ],
+          ),
+        );
+      },
     );
   }
 
@@ -275,7 +282,15 @@ class _MainPageState extends State<MainPage> {
         children: <Widget>[
           SizedBox(height: 18.0),
           Center(
-              child: Image.network(u.avatar_url ?? "", fit: BoxFit.fitWidth)),
+              child: Container(
+            padding: EdgeInsets.all(15),
+            width: 300,
+            height: 300,
+            decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                image: DecorationImage(
+                    fit: BoxFit.fill, image: NetworkImage(u.avatar_url ?? ""))),
+          )),
           Container(
               margin: EdgeInsets.all(20),
               child: Column(
@@ -298,7 +313,7 @@ class _MainPageState extends State<MainPage> {
   Widget makeNotice() {
     return Center(
         child: Container(
-          width: double.infinity,
+      width: double.infinity,
       color: Color(0xFF000000),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
